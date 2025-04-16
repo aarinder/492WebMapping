@@ -22,12 +22,12 @@
     
   <body>
     <!-- 1.3 Insert the div for the structure of the page here in the <body> of the page -->
-    <h1> Map 1: </h1>
+    <h1> Map 1: I finished my first degree in 2018 </h1>
           <div id='map1'></div>
     <hr>
-    <h1> Map 2:</h1>
+    <h1> Map 2: I remodeled a house for covid.</h1>
     <div id='map2'></div>  
-    <h1> Map 3:</h1>
+    <h1> Map 3:I am attending University of Oregon.</h1>
     <div id='map3'></div>   
       <script>
             /* Insert the JavaScript within the <script> tags, within the body */
@@ -38,7 +38,7 @@
             var map = new mapboxgl.Map({
                 container: 'map1', // id of a div on your page, where the map will be inserted
                 style: 'mapbox://styles/mapbox/standard', // the style URL 'mapbox://styles/mapbox/streets-v11' 
-                center: [-122.6788, 45.5212], // starting position [lng, lat] eg. [-122.6788, 45.5212]
+                center: [-122.485886, 48.769768], // starting position [lng, lat] eg. [-122.6788, 45.5212]
                 zoom: 11 // starting zoom 
             }); 
 
@@ -47,7 +47,7 @@
                     .setText('This is my first point.');
 
             var marker = new mapboxgl.Marker({color:'lightgreen'})
-              .setLngLat([-122.6788, 45.5212]) // starting position [lng, lat]
+              .setLngLat([-122.485886, 48.769768]) // starting position [lng, lat]
               .setPopup(popup) //add the popup named "popup" to this marker 
 		      .addTo(map); // add it to the map with the ID "map"
 
@@ -67,7 +67,7 @@
             var map2 = new mapboxgl.Map({
                 container: 'map2', // id of a div on your page, where the map will be inserted
                 style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-                center: [-122.6588, 45.1212], // starting position [lng, lat] eg. [-122.6788, 45.5212]
+                center: [-117.364717, 46.879878], // starting position [lng, lat] eg. [-122.6788, 45.5212]
                 zoom: 11 // starting zoom 
             });
 
@@ -76,7 +76,7 @@
                 .setText('This is my second point.');
 
             var marker2 = new mapboxgl.Marker({color:'lightblue'})
-                .setLngLat([-122.6588, 45.1212]) // starting position [lng, lat] 
+                .setLngLat([-117.364717, 46.879878]) // starting position [lng, lat] 
                 .setPopup(popup2) //add the popup to the marker 
                 .addTo(map2); // id it to the map with the ID *map2*
 
