@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <title>Hot Springs near Eugene Oregon</title> 
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <!--    The Mapbox JavaScript here in the <head> of the page    -->
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js'></script>
+    <!--    The Mapbox CSS here in the <head> of the page    -->
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css' rel='stylesheet' />
+      
+      <!--   Link to Google font-->
+      
+      
+      <!-- Line files -->
+      
+      
+      
+    <style>
+        /* CSS code between the <style> tags */
+        body { margin:0; padding:0; }
+
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        h2 {text-align: center;color:darkred}
+        #title { z-index: 9999; 
+                background-color:red; 
+                opacity: 75%; 
+                text-align: center 
+            }
+        /* Overrides the pop-up width slightly bigger min-width than the default Mapbox CSS*/
+         .mapboxgl-popup {
+            min-width: 325px;
+            /*add the css for the popup font here */
+        }
+        
+        
+        /* The CSS for the "Fly" buttons  */
+        .fly {
+            display: inline-block; /* displays over the map */
+            position: relative; /* displays over the map */
+            margin: 0px auto; 
+            width: 11%;  /* width of parent div */
+            padding: 10px;
+            border-style: solid;
+            border-color: oldlace;
+            border-radius: 3px; /* rounded corners */
+            font-size: 1em;
+            text-align: center;
+            font-weight: bold;
+            color: oldlace;
+            background: DarkRed;
+            cursor:pointer;
+        }
+        
+        /* Insert the CSS for the image here */
+        
+        /* Insert the CSS for the button here */
+
+
+    </style>
+  </head>
+
+  <body>
+      <!--  The map div -->
+      <div id='map'></div>
+      <!--  Insert the title div here (part V) -->
+    <div id='title'>
+     		<h1>Eugene Local Hot Springs Map</h1>
+     		<h2>We got lost so you don't have too</h2>
+
+       <!--  Insert the button elements here  -->
+      <button class='fly' id='Bigelow Hot Springs'>Bigelow Hot Springs</button>
+      <button class='fly' id='Cougar Hot Springs'>Cougar Hot Springs</button>
+      <button class='fly' id='Wall Creek Hot Springs'>Wall Creek Hot Springs</button>
+      <button class='fly' id='McCredie Hot Springs'>McCredie Hot Springs</button> 
+
+
+    <script>
+        // Insert the JavaScript within the <script> tags, within the body   
+        // Start with the Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1Ijoiam9tZXJzb24iLCJhIjoiY2o1bXE2bHlyMnJhZDMzbnpyMnhlODdpcSJ9.QJMJ_cTFCY050aZfSn1umQ';
+
+        // Initialize the map
+        var map = new mapboxgl.Map({
+            container: 'map', // id of a div on your page, where the map will be inserted
+            style: 'mapbox://styles/mapbox/outdoors-v11', // stylesheet location
+            center: [-122.5121, 44.0094], // starting position [lng, lat] eg. [-122.53721559135163, 43.95409901294854]
+            zoom: 8.5 // starting zoom
+       
+        });
+        
+         /***  POPUPS  ***/
+        
+         // Popup for marker 1  
+         var popup1_content = '<h2>Bigelow Hot Springs</h2>';
+         popup1_content += '<p>63 miles from City of Eugene</p>'; //adds txt to popup1
+         popup1_content += '<p>Avrage temp of hot spring is 104F</p>';
+         popup1_content += '<p>Beware! Oregon state law allows nudity anywhere natural bodies of water exist</p>';
+
+         var popup1 = new mapboxgl.Popup({ minWidth:'300px' })
+             .setHTML(popup1_content);
+
+         // Popup for marker 2  
+         var popup2_content = '<h2>Cougar Hot Springs</h2>';
+         popup2_content += '<p>55 miles from City of Eugene</p>'; //adds txt to popup2
+         popup2_content += '<p>Avrage temp of hot spring is 104F</p>';
+         popup2_content += '<p>Beware! Oregon state law allows nudity anywhere natural bodies of water exist</p>';
+
+         var popup2 = new mapboxgl.Popup({ minWidth:'300px' })
+             .setHTML(popup2_content);
+
+
+         // Popup for marker 3  
+         var popup3_content = '<h2>Wall Creek Hot Springs</h2>';
+         popup3_content += '<p>56 miles from City of Eugene</p>'; //adds txt to popup3
+         popup3_content += '<p>Avrage temp of hot spring is 96F to 104F</p>';
+         popup3_content += '<p>Beware! Oregon state law allows nudity anywhere natural bodies of water exist</p>';   
+
+         var popup3 = new mapboxgl.Popup({ minWidth:'300px' })
+             .setHTML(popup3_content);
+        
+         // Popup for marker 4  
+         var popup4_content = '<h2>McCredie Hot Springs</h2>';
+         popup4_content += '<p>51 miles from City of Eugene</p>'; //adds txt to popup4
+         popup4_content += '<p>Avrage temp of hot spring is 104F</p>';
+         popup4_content += '<p>Beware! Oregon state law allows nudity anywhere natural bodies of water exist</p>';   
+
+         var popup4 = new mapboxgl.Popup({ minWidth:'300px' })
+             .setHTML(popup4_content);
+
+         /***  END POPUPS  ***/ 
+         var Directions1_content = '<h3>Bigelow Hot Springs</h3><br>';
+        
+         // conectes the geojson file to  
+        
+         map.on('load', () => {
+             
+            map.addSource("OR_to_BHS_route", {
+                    "type": "geojson",
+                    "data": "Directions from Eugene, OR to Bigelow Hot Springs.geojson"
+              });
+
+              map.addLayer({
+                "id": "OR_to_BHS_layer",
+                "type": "line",
+                "source": "OR_to_BHS_route",
+                "paint": {
+                    "line-color": "#0000FF",
+                    "line-width": 8
+                },
+                'layout': {
+                // Make the layer NOT visible by default.
+                'visibility': 'none' // 'visible'
+            },
+            });
+             
+            map.addSource("OR_to_CHS_route", {
+                    "type": "geojson",
+                    "data": "Directions from Eugene, OR to Cougar Hot Springs, Oregon.geojson"
+              });
+
+              map.addLayer({
+                "id": "OR_to_CHS_layer",
+                "type": "line",
+                "source": "OR_to_CHS_route",
+                "paint": {
+                    "line-color": "#0000FF",
+                    "line-width": 8
+                },
+                'layout': {
+                // Make the layer NOT visible by default.
+                'visibility': 'none' // 'visible'
+            },
+            });
+
+            map.addSource("OR_to_McHS_route", {
+                    "type": "geojson",
+                    "data": "Directions from Eugene, OR to McCredie Hot Springs, Oregon.geojson"
+              });
+
+              map.addLayer({
+                "id": "OR_to_McHS_layer",
+                "type": "line",
+                "source": "OR_to_McHS_route",
+                "paint": {
+                    "line-color": "#0000FF",
+                    "line-width": 8
+                },
+                'layout': {
+                // Make the layer NOT visible by default.
+                'visibility': 'none' // 'visible'
+            },
+            });
+
+            map.addSource("OR_to_WHS_route", {
+                    "type": "geojson",
+                    "data": "Directions from Eugene, OR to Wall Creek Hot Springs OR.geojson"
+              });
+
+              map.addLayer({
+                "id": "OR_to_WHS_layer",
+                "type": "line",
+                "source": "OR_to_WHS_route",
+                "paint": {
+                    "line-color": "#0000FF",
+                    "line-width": 8
+                },
+                'layout': {
+                // Make the layer NOT visible by default.
+                'visibility': 'none' // 'visible'
+            },
+            });
+         });
+        
+        
+         /***  MARKERS  ***/
+            // Marker 1 - Bigelow Hot Springs
+            var marker1 = new mapboxgl.Marker({color:'DarkRed'})
+            .setLngLat([-122.0576, 44.2424]) // Bigelow Hot Springs 
+            .setPopup(popup1)
+            .addTo(map);
+
+        
+            // Marker 2 - Cougar Hot Springs 
+            var marker2 = new mapboxgl.Marker({color:'DarkRed'})
+            .setLngLat([-122.2333, 44.0864]) // Cougar Hot Springs
+            .setPopup(popup2)
+            .addTo(map);
+
+        
+            // Marker 3 - Wall Creek Hot Springs
+            var marker3 = new mapboxgl.Marker({color:'DarkRed'})
+            .setLngLat([-122.3096, 43.8119]) // Wall Creek Hot Springs
+            .setPopup(popup3)
+            .addTo(map);
+        
+        
+            // Marker 4 - McCredie Hot Springs
+            var marker4 = new mapboxgl.Marker({color:'DarkRed'})
+            .setLngLat([-122.2886, 43.7128]) // McCredie Hot Springs
+            .setPopup(popup4)
+            .addTo(map);
+            /***  END MARKERS  ***/
+
+
+         /***  Directions  ***/
+        
+                // Add a 'Directions' to the button element with the ID 'Bigelow Hot Springs'.
+        document.getElementById('Bigelow Hot Springs').addEventListener('click', function () {
+            map.jumpTo({
+                center: [-122.5690, 44.1453], 
+                zoom: 9
+            });
+            // This tells the line properties to visibile when the botton is clecked and clears the line properties of the other bottons
+             map.setLayoutProperty("OR_to_BHS_layer", 'visibility', 'visible');
+             map.setLayoutProperty("OR_to_CHS_layer", 'visibility', 'none');
+             map.setLayoutProperty("OR_to_McHS_layer", 'visibility', 'none');
+             map.setLayoutProperty("OR_to_WHS_layer", 'visibility', 'none');
+        });
+                // Add a 'Directions' to the button element with the ID 'Cougar Hot Springs'.
+        document.getElementById('Cougar Hot Springs').addEventListener('click', function () {
+            map.jumpTo({
+                center:[-122.6477, 44.1123], 
+                zoom: 9
+            });
+            // This tells the line properties to visibile when the botton is clecked and clears the line properties of the other bottons
+            map.setLayoutProperty("OR_to_CHS_layer", 'visibility', 'visible');
+            map.setLayoutProperty("OR_to_BHS_layer", 'visibility', 'none');
+            map.setLayoutProperty("OR_to_McHS_layer", 'visibility', 'none');
+            map.setLayoutProperty("OR_to_WHS_layer", 'visibility', 'none');
+        });
+                // Add a 'Directions' to the button element with the ID 'Wall Creek Hot Springs'.
+        document.getElementById('Wall Creek Hot Springs').addEventListener('click', function () {
+            map.jumpTo({
+                center: [-122.6626, 43.8519], 
+                zoom: 9
+            });
+            // This tells the line properties to visibile when the botton is clecked and clears the line properties of the other bottons
+            map.setLayoutProperty("OR_to_WHS_layer", 'visibility', 'visible');
+            map.setLayoutProperty("OR_to_McHS_layer", 'visibility', 'none');
+            map.setLayoutProperty("OR_to_BHS_layer", 'visibility', 'none');
+            map.setLayoutProperty("OR_to_CHS_layer", 'visibility', 'none');
+        });
+        
+                // Add a 'Directions' to the button element with the ID 'McCredie Hot Springs'.
+        document.getElementById('McCredie Hot Springs').addEventListener('click', function () {
+            map.jumpTo({
+                center:[-122.6626, 43.8519], 
+                zoom: 9
+            });
+            // This tells the line properties to visibile when the botton is clecked and clears the line properties of the other bottons
+            map.setLayoutProperty("OR_to_McHS_layer", 'visibility', 'visible');
+            map.setLayoutProperty("OR_to_WHS_layer", 'visibility', 'none');
+            map.setLayoutProperty("OR_to_BHS_layer", 'visibility', 'none');
+            map.setLayoutProperty("OR_to_CHS_layer", 'visibility', 'none');
+            
+        });
+        /***  END Directions  ***/
+    </script>
+
+  </body>
+
+</html>
